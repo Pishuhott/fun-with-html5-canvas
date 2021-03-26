@@ -72,8 +72,6 @@ document.addEventListener("DOMContentLoaded", function () {
         localStorage.setItem('coords', JSON.stringify(coords));
         localStorage.setItem('ctx.strokeStyle', JSON.stringify(ctx.strokeStyle));
         localStorage.setItem('ctx.lineWidth', JSON.stringify(ctx.lineWidth));
-
-
     }
 
     function replay() {
