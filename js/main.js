@@ -1,139 +1,141 @@
 document.addEventListener("DOMContentLoaded", function () {
-  let doc = document;
-  let imgSize = document.querySelector('#spasing');
-  let imgColor = document.querySelector('#base');
+    let doc = document;
+    let imgSize = doc.querySelector('#spasing');
+    let imgColor = doc.querySelector('#base');
 
-  let buttons = doc.querySelectorAll('.contols-buttons button');
+    let buttons = doc.querySelectorAll(".contols-buttons button");
 
-  let canvas = doc.getElementById('canvas');
-  let ctx = canvas.getContext('2d');
-  let isMouseDown = false;
-  let coords = [];
+    let canvas = doc.getElementById('canvas');
+    let canvasPos;
+    let ctx = canvas.getContext('2d');
+    let isMouseDown = false;
+    let coords = [];
 
-  let size = '5';
-  let color = '#000';
+    let size = '5';
+    let color = '#000';
 
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  ctx.strokeStyle = color;
+    //Refresh on window resize
+    function upWidthWindow() {
+        let wrapeer = doc.querySelector('.wrapeer');
+        let canvasDiv = doc.querySelector('.wrapeer__canvas');
+        let width = canvasDiv.offsetWidth;
+        let height = wrapeer.offsetHeight;
+        canvas.width = width - '40';
+        canvas.height = height - '40';
 
-
-  canvas.addEventListener('mousedown', function(){
-    isMouseDown = true;
-  });
-
-  canvas.addEventListener('mouseup', function(){
-    isMouseDown = false;
-    ctx.beginPath();
-    coords.push('mouseup');
-  });
-
-  ctx.lineWidth = size * 2;
-
-  canvas.addEventListener('mousemove', function(e) {
-    if (isMouseDown) {
-      coords.push([e.clientX, e.clientY]);
-
-      ctx.lineTo(e.clientX, e.clientY);
-      ctx.stroke();
-      ctx.strokeStyle = color;
-      ctx.lineWidth = size * 2;
-
-
-
-      ctx.beginPath();
-      ctx.arc(e.clientX, e.clientY, size, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = color;
-
-
-      ctx.beginPath();
-      ctx.moveTo(e.clientX, e.clientY);
+        canvasPos = canvas.getBoundingClientRect();
     }
-  });
 
-  function save() {
-    localStorage.setItem('coords', JSON.stringify(coords));
-  }
+    window.addEventListener('resize', upWidthWindow);
 
-  function replay() {
-    let timer = setInterval(function() {
-      if(!coords.length) {
-        clearInterval(timer);
-        ctx.beginPath();
-        return;
-      }
-      let crd = coords.shift ();
-      let e = {
-        clientX: crd['0'],
-        clientY: crd['1']
-      };
+    upWidthWindow();
 
-      ctx.lineTo(e.clientX, e.clientY);
-      ctx.stroke();
+    //Drawing function
+    ctx.strokeStyle = color;
 
-      ctx.beginPath();
-      ctx.arc(e.clientX, e.clientY, size, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.beginPath();
-      ctx.moveTo(e.clientX, e.clientY);
-      
-    }, 10)
-  }
-
-  function clear() {
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.beginPath();
-    ctx.fillStyle = color;
-  }
-
-  for (let i = 0; i < buttons.length; i++) {
-    let button = buttons[i];
-    button.addEventListener('click', function() {
-
-      if(button.className == 'save') {
-        save();
-      }
-
-      if(button.className == 'replay') {
-        coords = JSON.parse(localStorage.getItem('coords'));
-        clear();
-        replay();
-      }
-
-      if(button.className == 'clear') {
-        clear();
-      }
+    canvas.addEventListener('mousedown', function () {
+        isMouseDown = true;
     });
-};
+
+    canvas.addEventListener('mouseup', function () {
+        isMouseDown = false;
+        ctx.beginPath();
+        coords.push('mouseup');
+    });
+
+    ctx.lineWidth = size * 2;
+
+    canvas.addEventListener('mousemove', function (e) {
+        if (isMouseDown) {
+            let canvasPosTop = e.clientX - canvasPos.left;
+            let canvasPosLeft = e.clientY - canvasPos.top;
+
+            coords.push([canvasPosTop, canvasPosLeft]);
+
+            ctx.lineTo(canvasPosTop, canvasPosLeft);
+            ctx.stroke();
+            ctx.strokeStyle = color;
+            ctx.lineWidth = size * 2;
+
+            ctx.beginPath();
+            ctx.arc(canvasPosTop, canvasPosLeft, size, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = color;
+
+            ctx.beginPath();
+            ctx.moveTo(canvasPosTop, canvasPosLeft);
+        }
+    });
+
+    //Save, clear and play functions
+    function save() {
+        localStorage.setItem('coords', JSON.stringify(coords));
+        localStorage.setItem('ctx.strokeStyle', JSON.stringify(ctx.strokeStyle));
+        localStorage.setItem('ctx.lineWidth', JSON.stringify(ctx.lineWidth));
 
 
+    }
 
+    function replay() {
+        let timer = setInterval(function () {
+            if (!coords.length) {
+                clearInterval(timer);
+                ctx.beginPath();
+                return;
+            }
+            let crd = coords.shift();
+            let e = {
+                clientX: crd['0'],
+                clientY: crd['1'],
+            };
 
+            ctx.lineTo(e.clientX, e.clientY);
+            ctx.stroke();
 
-  
-  
-  function handleUpdate() {
-    size = this.value;
-    console.log(ctx.lineWidth)
+            ctx.beginPath();
+            ctx.arc(e.clientX, e.clientY, size, 0, Math.PI * 2);
+            ctx.fill();
 
-}
+            ctx.beginPath();
+            ctx.moveTo(e.clientX, e.clientY);
+        }, 20);
+    }
 
-  function colorChange() {
-    color = this.value;
-    console.log(color);
+    function clear() {
+        ctx.fillStyle = 'white';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
+        ctx.fillStyle = color;
+    }
 
-  }
-  
-  
-  console.log(size);
+    for (let i = 0; i < buttons.length; i++) {
+        let button = buttons[i];
+        button.addEventListener('click', function () {
+            if (button.className == 'save') {
+                save();
+            }
 
-  imgSize.addEventListener('change', handleUpdate);
-  imgColor.addEventListener('change', colorChange);
+            if (button.className == 'replay') {
+                coords = JSON.parse(localStorage.getItem('coords'));
+                clear();
+                replay();
+            }
 
+            if (button.className == 'clear') {
+                clear();
+            }
+        });
+    }
 
+    //Pen size and color
+    function handleUpdate() {
+        size = this.value;
+    }
 
+    function colorUpdate() {
+        color = this.value;
+    }
 
+    imgSize.addEventListener('change', handleUpdate);
+    imgColor.addEventListener('change', colorUpdate);
 });
