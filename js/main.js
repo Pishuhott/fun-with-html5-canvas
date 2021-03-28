@@ -16,8 +16,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //Refresh on window resize
     function upWidthWindow() {
-        let wrapeer = doc.querySelector('.wrapeer');
-        let canvasDiv = doc.querySelector('.wrapeer__canvas');
+        let wrapeer = doc.querySelector('.wrapper');
+        let canvasDiv = doc.querySelector('.wrapper__canvas');
         let width = canvasDiv.offsetWidth;
         let height = wrapeer.offsetHeight;
         canvas.width = width - '40';
