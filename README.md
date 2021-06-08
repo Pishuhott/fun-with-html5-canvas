@@ -5,4 +5,4 @@
 
 **Description**
 
-Creation of a simple canvas for drawing. Implemented additional functionality: added buttons for selection of rainbow and wave styles, as well as input for selection of any line color and width.
+Creating a simple canvas for painting. Additional functionality has been implemented: buttons have been added for selecting any color and line width, progress synchronization and playback.
