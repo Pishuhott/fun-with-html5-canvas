@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", function () {
     let ctx = canvas.getContext('2d');
     let isMouseDown = false;
     let coords = [];
-
     let size = '5';
     let color = '#000';
 
@@ -70,6 +69,8 @@ document.addEventListener("DOMContentLoaded", function () {
     //Save, clear and play functions
     function save() {
         localStorage.setItem('coords', JSON.stringify(coords));
+        localStorage.setItem('sizes', JSON.stringify(sizes));
+        localStorage.setItem('colors', JSON.stringify(colors));
         localStorage.setItem('ctx.strokeStyle', JSON.stringify(ctx.strokeStyle));
         localStorage.setItem('ctx.lineWidth', JSON.stringify(ctx.lineWidth));
     }
@@ -115,6 +116,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (button.className == 'replay') {
                 coords = JSON.parse(localStorage.getItem('coords'));
+                sizes = JSON.parse(localStorage.getItem('sizes'));
+                colors = JSON.parse(localStorage.getItem('colors'));
                 clear();
                 replay();
             }

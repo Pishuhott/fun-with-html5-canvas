@@ -30,6 +30,10 @@ h2 {
     text-align: center;
 }
 
+.controls-panel p {
+    font-size: 1.6rem;
+}
+
 .contols-buttons {
     display: flex;
     flex-direction: column;
