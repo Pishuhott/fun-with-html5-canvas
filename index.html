@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css2?family=New+Tegomin&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css" />
+    <script src="./js/main.js"></script>
+    <title>Mini Paint</title>
+</head>
+<h1>Welcome to Mini Paint</h1>
+
+<body>
+    <main>
+        <div class="wrapper">
+            <div class="panel controls-panel">
+                <h2>Control</h2>
+                <div class="contols-buttons">
+                    <div>
+                        <button class="save">
+                            <img src="./img/save.svg" alt="" />
+                        </button>
+                        <p>Save drawing</p>
+                    </div>
+                    <div><button class="replay">
+                        <img src="./img/play.svg" alt="" />
+                    </button>
+                        <p>Repeat drawing</p>
+                    </div>
+                    <div>
+                        <button class="clear">
+                            <img src="./img/clear.svg" alt="" />
+                        </button>
+                        <p>Clear</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="wrapper__canvas">
+                <canvas id="canvas"></canvas>
+            </div>
+
+            <div class="panel tools-panel">
+                <h2>Tools</h2>
+                <div>
+                    <label for="spasing">Image size</label>
+                    <input id="spasing" type="range" name="spasing" min="3" max="30" value="5" />
+                </div>
+
+                <div class="color">
+                    <label for="base">Background color</label>
+                    <input id="base" type="color" name="base" value="#0000" />
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>
